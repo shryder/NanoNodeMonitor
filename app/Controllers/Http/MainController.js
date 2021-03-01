@@ -33,7 +33,11 @@ class MainController {
 	}
 
 	convertFromRaw(raw) {
-		return parseInt(NanoCurrency.convert(raw, { from: "raw", to: "NANO" })).toFixed(0) + " NANO";
+		return parseInt(NanoCurrency.convert(raw, { from: "raw", to: "NANO" })).toLocaleString(0) + " NANO";
+	}
+
+	prettifyNumber(number) {
+		return parseInt(number).toLocaleString();
 	}
 
 	async getNodeInfo(){
@@ -56,32 +60,32 @@ class MainController {
 		const cpu_info = await si.cpu();
 		const mem_info = await osu.mem.info();
 
-		const used_memory = mem_info.usedMemMb;
-		const total_memory = mem_info.totalMemMb;
+		const used_memory = mem_info.usedMemMb.toLocaleString();
+		const total_memory = mem_info.totalMemMb.toLocaleString();
 
 		const data = {
 			account_address: account_address,
 			node: {
 				version: node_info.node_vendor,
 				database: node_info.store_vendor,
-				node_uptime: `${(uptime.seconds / 3600).toFixed(2)} hours`,
+				node_uptime: `${(uptime.seconds / 3600).toLocaleString()} hours`,
 				peers: telemetry.peer_count
 			},
 			blocks: {
-				current_block: telemetry.block_count,
-				cemented_block: telemetry.cemented_count,
-				unchecked_blocks: telemetry.unchecked_count,
-				sync_status: "100%"
+				current_block: this.prettifyNumber(telemetry.block_count),
+				cemented_block: this.prettifyNumber(telemetry.cemented_count),
+				unchecked_blocks: this.prettifyNumber(telemetry.unchecked_count),
+				account_count: this.prettifyNumber(telemetry.account_count)
 			},
 			account: {
 				balance: this.convertFromRaw(account_info.balance),
 				pending: this.convertFromRaw(account_info.pending),
 				representative: account_info.representative,
-				voting_weight: this.convertFromRaw(account_info.weight)
+				voting_weight: this.prettifyNumber(this.convertFromRaw(account_info.weight))
 			},
 			system: {
 				location: VPS_COUNTRY,
-				memory_used: `${used_memory}/${total_memory} MB`,
+				memory_used: `${this.prettifyNumber(used_memory)}/${this.prettifyNumber(total_memory)} MB`,
 				cpu: cpu_info.brand,
 				cpu_usage: `${cpu_usage}%`
 			},
