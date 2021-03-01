@@ -1,31 +1,12 @@
-# Adonis fullstack application
+# COOLEST NANO MONITOR IN TOWN
 
-This is the fullstack boilerplate for AdonisJs, it comes pre-configured with.
+![Screenshot](https://i.imgur.com/gN8hzha.png)
 
-1. Bodyparser
-2. Session
-3. Authentication
-4. Web security middleware
-5. CORS
-6. Edge template engine
-7. Lucid ORM
-8. Migrations and seeds
-
-## Setup
-
-Use the adonis command to install the blueprint
-
-```bash
-adonis new yardstick
-```
-
-or manually clone the repo and then run `npm install`.
+### Installation
+1. Rename .env.example to .env
+2. Edit variables accordingly
+3. run `npm install`
+4. run `node server.js` 
 
 
-### Migrations
-
-Run the following command to run startup migrations.
-
-```js
-adonis migration:run
-```
+I suggest you use pm2 as a Process Manager
