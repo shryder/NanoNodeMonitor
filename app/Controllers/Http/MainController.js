@@ -37,11 +37,11 @@ class MainController {
 	}
 
 	getTotalMemory(){
-		return OS.totalmem() * 1e+9;
+		return OS.totalmem() / 1e+9;
 	}
 
 	getUsedMemory(){
-		return (OS.totalmem() - OS.freemem()) * 1e+9;
+		return (OS.totalmem() - OS.freemem()) / 1e+9;
 	}
 
 	async getNodeInfo(){
