@@ -81,7 +81,7 @@ class MainController {
 				balance: this.convertFromRaw(account_info.balance),
 				pending: this.convertFromRaw(account_info.pending),
 				representative: account_info.representative,
-				voting_weight: this.prettifyNumber(this.convertFromRaw(account_info.weight))
+				voting_weight: `${this.prettifyNumber(this.convertFromRaw(account_info.weight))} NANO`
 			},
 			system: {
 				location: VPS_COUNTRY,
