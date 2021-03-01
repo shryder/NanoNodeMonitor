@@ -3,14 +3,14 @@
 const Config = use('Config');
 const RPC_URL = Config.get('nano.RPC_URL');
 const VPS_COUNTRY = Config.get('nano.VPS_COUNTRY');
+const si = require('systeminformation');
+const NanoCurrency = require('nanocurrency');
+const OS = require('os');
+const osu = require('node-os-utils')
 
 const axios = require('axios').create({
 	baseURL: RPC_URL
 });
-
-const NanoCurrency = require('nanocurrency');
-const OS = require('os');
-const osu = require('node-os-utils')
 
 function secondsToDhms(seconds) {
 	seconds = Number(seconds);
