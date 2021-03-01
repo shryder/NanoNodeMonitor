@@ -1,0 +1,29 @@
+.container-fluid {
+	margin: 0 auto;
+	max-width: 1440px;
+	width: 95%;
+}
+
+@media only screen and (min-width: 601px) {
+	.container-fluid {
+		width: 90%;
+	}
+}
+
+@media only screen and (min-width: 993px) {
+	.container-fluid {
+		width: 90%;
+	}
+}
+
+nav {
+	background-color: #4A90E2 !important;
+}
+
+.nav-wrapper {
+	padding-left: 1rem;
+}
+
+.mt-1 {
+	margin-top: 1rem;
+}
