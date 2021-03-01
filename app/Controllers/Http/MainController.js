@@ -6,6 +6,7 @@ const VPS_COUNTRY = Config.get('nano.VPS_COUNTRY');
 const si = require('systeminformation');
 const NanoCurrency = require('nanocurrency');
 const osu = require('node-os-utils')
+const qrcode = require('yaqrcode');
 
 const axios = require('axios').create({
 	baseURL: RPC_URL
@@ -32,7 +33,7 @@ class MainController {
 	}
 
 	convertFromRaw(raw) {
-		return parseInt(NanoCurrency.convert(raw, { from: "raw", to: "NANO" })).toFixed(2) + " NANO";
+		return parseInt(NanoCurrency.convert(raw, { from: "raw", to: "NANO" })).toFixed(0) + " NANO";
 	}
 
 	async getNodeInfo(){
@@ -80,10 +81,11 @@ class MainController {
 			},
 			system: {
 				location: VPS_COUNTRY,
-				memory_used: `${used_memory}/${total_memory}`,
+				memory_used: `${used_memory}/${total_memory} MB`,
 				cpu: cpu_info.brand,
 				cpu_usage: `${cpu_usage}%`
-			}
+			},
+			qrcode: qrcode(`nano:${account_address}`)
 		}
 
 		return data;
