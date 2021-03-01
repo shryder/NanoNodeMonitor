@@ -33,14 +33,7 @@ class MainController {
 	}
 
 	convertFromRaw(raw) {
-		let NANO = 0;
-		try {
-			NANO = NanoCurrency.convert(raw, { from: "raw", to: "NANO" });
-		} catch (e) {
-			NANO = 0;
-		}
-
-		return NANO + " NANO";
+		return NanoCurrency.convert(raw, { from: "raw", to: "NANO" }); + " NANO";
 	}
 
 	async getNodeInfo(){
@@ -49,7 +42,10 @@ class MainController {
 		const node_info = await this.sendRPC({ action: "version" });
 		const account_info = await this.sendRPC({
 			action: "account_info",
-			account: account_address
+			account: account_address,
+			representative: "true",
+			weight: "true",
+			pending: "true"
 		});
 
 
