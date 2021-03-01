@@ -33,7 +33,7 @@ class MainController {
 	}
 
 	convertFromRaw(raw) {
-		return NanoCurrency.convert(raw, { from: "raw", to: "NANO" }).toFixed(2) + " NANO";
+		return parseInt(NanoCurrency.convert(raw, { from: "raw", to: "NANO" })).toFixed(2) + " NANO";
 	}
 
 	getTotalMemory(){
