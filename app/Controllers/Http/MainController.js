@@ -28,22 +28,31 @@ function secondsToDhms(seconds) {
 
 class MainController {
 	async sendRPC(data) {
-		let response = await axios.get('/', data);
+		let response = await axios.post('/', data);
 		return response.data;
 	}
 
 	convertFromRaw(raw) {
-		return NanoCurrency.convert(raw, { from: "raw", to: "NANO" }) + " NANO";
+		let NANO = 0;
+		try {
+			NANO = NanoCurrency.convert(raw, { from: "raw", to: "NANO" });
+		} catch (e) {
+			NANO = 0;
+		}
+
+		return NANO + " NANO";
 	}
 
 	async getNodeInfo(){
 		const account_address = Config.get('nano.account_address');
-		const telemetry = (await this.sendRPC({ action: "telemetry" })).data;
-		const node_info = (await this.sendRPC({ action: "version" })).data;
-		const account_info = (await this.sendRPC({
-					action: "account_info",
-					account: account_address
-				})).data;
+		const telemetry = await this.sendRPC({ action: "telemetry" });
+		const node_info = await this.sendRPC({ action: "version" });
+		const account_info = await this.sendRPC({
+			action: "account_info",
+			account: account_address
+		});
+
+
 		const cpu_usage = await osu.cpu.usage();
 		const cpu_name = await si.cpu().brand;
 
