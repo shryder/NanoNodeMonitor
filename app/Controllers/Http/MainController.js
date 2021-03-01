@@ -82,10 +82,10 @@ class MainController {
 				pending: this.convertFromRaw(account_info.pending),
 				representative: account_info.representative,
 				voting_weight: `${this.prettifyNumber(this.convertFromRaw(account_info.weight))} NANO`
-			},
-			system: {
+			}
+,			system: {
 				location: VPS_COUNTRY,
-				memory_used: `${this.prettifyNumber(used_memory)}/${this.prettifyNumber(total_memory)} MB`,
+				memory_used: `${used_memory}/${total_memory} MB`,
 				cpu: cpu_info.brand,
 				cpu_usage: `${cpu_usage}%`
 			},
