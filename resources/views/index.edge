@@ -9,9 +9,9 @@
 							Account
 						</span>
 						{{ account_address }}
-						<div>
-							<img src="{{qrcode}}">
-						</div>
+						<a href='nano:{{ account_address }}' style='position: absolute;right: 5px;top: 5px;'>
+							<img src="{{ qrcode }}" style='width:100px;'>
+						</a>
 					</div>
 				</div>
 			</div>
