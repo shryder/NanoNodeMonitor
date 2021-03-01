@@ -33,7 +33,15 @@ class MainController {
 	}
 
 	convertFromRaw(raw) {
-		return NanoCurrency.convert(raw, { from: "raw", to: "NANO" }); + " NANO";
+		return NanoCurrency.convert(raw, { from: "raw", to: "NANO" }).toFixed(2) + " NANO";
+	}
+
+	getTotalMemory(){
+		return OS.totalmem() * 1e+9;
+	}
+
+	getUsedMemory(){
+		return (OS.totalmem() - OS.freemem()) * 1e+9;
 	}
 
 	async getNodeInfo(){
@@ -48,16 +56,20 @@ class MainController {
 			pending: "true"
 		});
 
+		const uptime = await this.sendRPC({
+			action: "uptime"
+		});
+
 
 		const cpu_usage = await osu.cpu.usage();
-		const cpu_name = await si.cpu().brand;
+		const cpu_info = await si.cpu();
 
 		const data = {
 			account_address: account_address,
 			node: {
 				version: node_info.vendor,
 				database: node_info.store_vendor,
-				node_uptime: secondsToDhms(telemetry.uptime),
+				node_uptime: `${(uptime.seconds / 3600).toFixed(2)} hours`,
 				peers: telemetry.peer_count
 			},
 			blocks: {
@@ -74,8 +86,8 @@ class MainController {
 			},
 			system: {
 				location: VPS_COUNTRY,
-				memory_used: `${OS.totalmem() - OS.freemem()}/${OS.totalmem()}`,
-				cpu: cpu_name,
+				memory_used: `${this.getUsedMemory()}/${this.getTotalMemory()}`,
+				cpu: cpu_info.brand,
 				cpu_usage: `${cpu_usage}%`
 			}
 		}
