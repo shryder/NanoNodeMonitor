@@ -5,7 +5,6 @@ const RPC_URL = Config.get('nano.RPC_URL');
 const VPS_COUNTRY = Config.get('nano.VPS_COUNTRY');
 const si = require('systeminformation');
 const NanoCurrency = require('nanocurrency');
-const OS = require('os');
 const osu = require('node-os-utils')
 
 const axios = require('axios').create({
@@ -36,14 +35,6 @@ class MainController {
 		return parseInt(NanoCurrency.convert(raw, { from: "raw", to: "NANO" })).toFixed(2) + " NANO";
 	}
 
-	getTotalMemory(){
-		return OS.totalmem() / 1e+9;
-	}
-
-	getUsedMemory(){
-		return (OS.totalmem() - OS.freemem()) / 1e+9;
-	}
-
 	async getNodeInfo(){
 		const account_address = Config.get('nano.account_address');
 		const telemetry = await this.sendRPC({ action: "telemetry" });
@@ -60,14 +51,17 @@ class MainController {
 			action: "uptime"
 		});
 
-
 		const cpu_usage = await osu.cpu.usage();
 		const cpu_info = await si.cpu();
+		const mem_info = await osu.mem.info();
+
+		const used_memory = mem_info.usedMemMb;
+		const total_memory = mem_info.totalMemMb;
 
 		const data = {
 			account_address: account_address,
 			node: {
-				version: node_info.vendor,
+				version: node_info.node_vendor,
 				database: node_info.store_vendor,
 				node_uptime: `${(uptime.seconds / 3600).toFixed(2)} hours`,
 				peers: telemetry.peer_count
@@ -86,7 +80,7 @@ class MainController {
 			},
 			system: {
 				location: VPS_COUNTRY,
-				memory_used: `${this.getUsedMemory()}/${this.getTotalMemory()}`,
+				memory_used: `${used_memory}/${total_memory}`,
 				cpu: cpu_info.brand,
 				cpu_usage: `${cpu_usage}%`
 			}
