@@ -38,12 +38,12 @@ class MainController {
 
 	async getNodeInfo(){
 		const account_address = Config.get('nano.account_address');
-		const telemetry = await this.sendRPC({ action: "telemetry" });
-		const node_info = await this.sendRPC({ action: "version" });
-		const account_info = await this.sendRPC({
-			action: "account_info",
-			account: account_address
-		});
+		const telemetry = (await this.sendRPC({ action: "telemetry" })).data;
+		const node_info = (await this.sendRPC({ action: "version" })).data;
+		const account_info = (await this.sendRPC({
+					action: "account_info",
+					account: account_address
+				})).data;
 		const cpu_usage = await osu.cpu.usage();
 		const cpu_name = await si.cpu().brand;
 
