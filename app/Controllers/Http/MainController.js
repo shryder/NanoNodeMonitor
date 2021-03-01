@@ -78,7 +78,7 @@ class MainController {
 			},
 			system: {
 				location: VPS_COUNTRY,
-				memory_used: `${os.totalmem() - os.freemem()}/${os.totalmem()}`,
+				memory_used: `${OS.totalmem() - OS.freemem()}/${OS.totalmem()}`,
 				cpu: cpu_name,
 				cpu_usage: `${cpu_usage}%`
 			}
