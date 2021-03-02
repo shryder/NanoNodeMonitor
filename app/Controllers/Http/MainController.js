@@ -85,8 +85,8 @@ class MainController {
 				pending_usd: "$ " + this.prettifyNumber(this.convertFromRaw(account_info.pending) * NANO_USD_PRICE),
 
 				representative: account_info.representative,
-			}
-,			system: {
+			},
+			system: {
 				location: VPS_COUNTRY,
 				memory_used: `${used_memory} / ${total_memory} MB`,
 				cpu: cpu_info.brand,
