@@ -43,6 +43,7 @@ class MainController {
 	async getNodeInfo(){
 		const account_address = Config.get('nano.account_address');
 		const telemetry = await this.sendRPC({ action: "telemetry" });
+		const block_count_info = await this.sendRPC({ action: "block_count" });
 		const node_info = await this.sendRPC({ action: "version" });
 		const account_info = await this.sendRPC({
 			action: "account_info",
@@ -72,9 +73,9 @@ class MainController {
 				peers: telemetry.peer_count
 			},
 			blocks: {
-				current_block: this.prettifyNumber(telemetry.block_count),
-				cemented_block: this.prettifyNumber(telemetry.cemented_count),
-				unchecked_blocks: this.prettifyNumber(telemetry.unchecked_count),
+				current_block: this.prettifyNumber(block_count_info.count),
+				cemented_block: this.prettifyNumber(block_count_info.cemented),
+				unchecked_blocks: this.prettifyNumber(block_count_info.unchecked),
 				account_count: this.prettifyNumber(telemetry.account_count)
 			},
 			account: {
