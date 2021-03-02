@@ -27,7 +27,7 @@ class MainController {
 	}
 
 	convertFromRaw(raw) {
-		return parseInt(NanoCurrency.convert(raw, { from: "raw", to: "NANO" })).toLocaleString(0) + " NANO";
+		return parseInt(NanoCurrency.convert(raw, { from: "raw", to: "NANO" })).toLocaleString(0);
 	}
 
 	prettifyNumber(number) {
@@ -58,7 +58,6 @@ class MainController {
 		const used_memory = mem_info.usedMemMb.toLocaleString();
 		const total_memory = mem_info.totalMemMb.toLocaleString();
 
-		const voting_weight = this.convertFromRaw(account_info.weight);
 		const NANO_USD_PRICE = await this.getNanoPrice();
 
 		const data = {
@@ -76,13 +75,13 @@ class MainController {
 				account_count: this.prettifyNumber(telemetry.account_count)
 			},
 			account: {
-				balance: this.convertFromRaw(account_info.balance),
+				balance: this.convertFromRaw(account_info.balance) + " NANO",
 				balance_usd: this.convertFromRaw(account_info.balance) * NANO_USD_PRICE,
 
-				voting_weight: `${this.prettifyNumber(voting_weight)} NANO`,
-				voting_weight_usd: voting_weight * NANO_USD_PRICE,
+				voting_weight: `${this.prettifyNumber(this.convertFromRaw(account_info.weight))} NANO`,
+				voting_weight_usd: this.convertFromRaw(account_info.weight) * NANO_USD_PRICE,
 
-				pending: this.convertFromRaw(account_info.pending),
+				pending: this.convertFromRaw(account_info.pending) + " NANO",
 				pending_usd: this.convertFromRaw(account_info.pending) * NANO_USD_PRICE,
 
 				representative: account_info.representative,
