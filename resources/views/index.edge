@@ -17,7 +17,7 @@
 			</div>
 		</div>
 		<div class='row'>
-			<div class='col s12 m3'>
+			<div class='col s12 m6 l3'>
 				<ul class="collection with-header">
 					<li class="collection-header"><h5>Node</h5></li>
 					<li class="collection-item">
@@ -55,7 +55,7 @@
 
 				</ul>
 			</div>
-			<div class='col s12 m3'>
+			<div class='col s12 m6 l3'>
 				<ul class="collection with-header">
 					<li class="collection-header"><h5>Blocks</h5></li>
 					<li class="collection-item">
@@ -92,13 +92,13 @@
 					</li>
 				</ul>
 			</div>
-			<div class='col s12 m3'>
+			<div class='col s12 m6 l3'>
 				<ul class="collection with-header">
 					<li class="collection-header"><h5>Account</h5></li>
 					<li class="collection-item">
 						<div>
 							Balance
-							<div class="secondary-content truncate">
+							<div class="secondary-content truncate" data-position="top" data-tooltip="{{ account.balance }}">
 								{{ account.balance }}
 							</div>
 						</div>
@@ -106,7 +106,7 @@
 					<li class="collection-item">
 						<div>
 							Pending
-							<div class="secondary-content truncate">
+							<div class="secondary-content truncate" data-position="top" data-tooltip="{{ account.pending_usd }}">
 								{{ account.pending }}
 							</div>
 						</div>
@@ -122,14 +122,14 @@
 					<li class="collection-item">
 						<div>
 							Voting Weight
-							<div class="secondary-content truncate">
+							<div class="secondary-content truncate tooltipped" data-position="top" data-tooltip="{{ account.voting_weight_usd }}">
 								{{ account.voting_weight }}
 							</div>
 						</div>
 					</li>
 				</ul>
 			</div>
-			<div class='col s12 m3'>
+			<div class='col s12 m6 l3'>
 				<ul class="collection with-header">
 					<li class="collection-header"><h5>System</h5></li>
 					<li class="collection-item">

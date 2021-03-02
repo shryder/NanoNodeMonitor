@@ -12,21 +12,15 @@ const axios = require('axios').create({
 	baseURL: RPC_URL
 });
 
-function secondsToDhms(seconds) {
-	seconds = Number(seconds);
-	var d = Math.floor(seconds / (3600*24));
-	var h = Math.floor(seconds % (3600*24) / 3600);
-	var m = Math.floor(seconds % 3600 / 60);
-	var s = Math.floor(seconds % 60);
-
-	var dDisplay = d > 0 ? d + (d == 1 ? " day, " : " days, ") : "";
-	var hDisplay = h > 0 ? h + (h == 1 ? " hour, " : " hours, ") : "";
-	var mDisplay = m > 0 ? m + (m == 1 ? " minute, " : " minutes, ") : "";
-	var sDisplay = s > 0 ? s + (s == 1 ? " second" : " seconds") : "";
-	return dDisplay + hDisplay + mDisplay + sDisplay;
-}
+const COINGECKO_API = "https://api.coingecko.com/api/v3/coins/nano?localization=false&tickers=false&market_data=true&community_data=false&developer_data=false&sparkline=false";
 
 class MainController {
+	async getNanoPrice(){
+		let response = await axios.get(COINGECKO_API);
+
+		return response.data.market_data.current_price.usd;
+	}
+
 	async sendRPC(data) {
 		let response = await axios.post('/', data);
 		return response.data;
@@ -64,12 +58,15 @@ class MainController {
 		const used_memory = mem_info.usedMemMb.toLocaleString();
 		const total_memory = mem_info.totalMemMb.toLocaleString();
 
+		const voting_weight = this.convertFromRaw(account_info.weight);
+		const NANO_USD_PRICE = await this.getNanoPrice();
+
 		const data = {
 			account_address: account_address,
 			node: {
 				version: node_info.node_vendor,
 				database: node_info.store_vendor,
-				node_uptime: `${(uptime.seconds / 3600).toLocaleString()} hours`,
+				node_uptime: `${(uptime.seconds / 3600).toFixed(2).toLocaleString()} hours`,
 				peers: telemetry.peer_count
 			},
 			blocks: {
@@ -80,13 +77,19 @@ class MainController {
 			},
 			account: {
 				balance: this.convertFromRaw(account_info.balance),
+				balance_usd: this.convertFromRaw(account_info.balance) * NANO_USD_PRICE,
+
+				voting_weight: `${this.prettifyNumber(voting_weight)} NANO`,
+				voting_weight_usd: voting_weight * NANO_USD_PRICE,
+
 				pending: this.convertFromRaw(account_info.pending),
+				pending_usd: this.convertFromRaw(account_info.pending) * NANO_USD_PRICE,
+
 				representative: account_info.representative,
-				voting_weight: `${this.prettifyNumber(this.convertFromRaw(account_info.weight))} NANO`
 			}
 ,			system: {
 				location: VPS_COUNTRY,
-				memory_used: `${used_memory}/${total_memory} MB`,
+				memory_used: `${used_memory} / ${total_memory} MB`,
 				cpu: cpu_info.brand,
 				cpu_usage: `${cpu_usage}%`
 			},
