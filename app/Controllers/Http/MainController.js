@@ -76,13 +76,13 @@ class MainController {
 			},
 			account: {
 				balance: this.convertFromRaw(account_info.balance) + " NANO",
-				balance_usd: this.convertFromRaw(account_info.balance) * NANO_USD_PRICE,
+				balance_usd: (this.convertFromRaw(account_info.balance) * NANO_USD_PRICE).toFixed(2),
 
 				voting_weight: `${this.prettifyNumber(this.convertFromRaw(account_info.weight))} NANO`,
-				voting_weight_usd: this.convertFromRaw(account_info.weight) * NANO_USD_PRICE,
+				voting_weight_usd: (this.convertFromRaw(account_info.weight) * NANO_USD_PRICE).toFixed(2),
 
 				pending: this.convertFromRaw(account_info.pending) + " NANO",
-				pending_usd: this.convertFromRaw(account_info.pending) * NANO_USD_PRICE,
+				pending_usd: (this.convertFromRaw(account_info.pending) * NANO_USD_PRICE).toFixed(2),
 
 				representative: account_info.representative,
 			}
