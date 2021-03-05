@@ -60,8 +60,17 @@ class MainController {
 
 		const NANO_USD_PRICE = await this.getNanoPrice();
 
+		const ALLOW_PUBLIC_RPC_ACCESS = Config.get('nano.ALLOW_PUBLIC_RPC_ACCESS');
+		const PUBLIC_RPC_URL = Config.get('nano.PUBLIC_RPC_URL');
+		const API_ALLOWED_COMMANDS = Config.get('nano.API_ALLOWED_COMMANDS');
+
 		const data = {
 			account_address: account_address,
+			public_rpc: {
+				enabled: ALLOW_PUBLIC_RPC_ACCESS,
+				url: PUBLIC_RPC_URL,
+				allowed_commands: API_ALLOWED_COMMANDS
+			},
 			node: {
 				version: node_info.node_vendor,
 				database: node_info.store_vendor,
@@ -99,9 +108,12 @@ class MainController {
 	}
 
 	async index({ view }){
-		let data = await this.getNodeInfo();
-
-		return view.render('index', data);
+		try {
+			let data = await this.getNodeInfo();
+			return view.render('index', data);
+		} catch(e) {
+			return "Something wrong happened, this NANO node might be down right now."
+		}
 	}
 }
 

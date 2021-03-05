@@ -16,6 +16,31 @@
 				</div>
 			</div>
 		</div>
+		@if(public_rpc.enabled)
+			<div class='row'>
+				<div class="col s12">
+					<div class="card">
+						<div class="card-content">
+							<span class="card-title">
+								Public API
+							</span>
+							<div>
+								Currently this API is free for unlimited use, accepts both GET and POST requests
+							</div>
+							<blockquote>
+								{{ account_address.url }}
+							</blockquote>
+							<div>
+								List of allowed commands:
+							</div>
+							<blockquote>
+								{{ public_rpc.allowed_commands }}
+							</blockquote>
+						</div>
+					</div>
+				</div>
+			</div>
+		@endif
 		<div class='row'>
 			<div class='col s12 m6 l3'>
 				<ul class="collection with-header">
