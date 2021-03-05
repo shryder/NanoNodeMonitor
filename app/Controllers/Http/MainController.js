@@ -1,18 +1,21 @@
 'use strict'
 
 const Config = use('Config');
-const RPC_URL = Config.get('nano.RPC_URL');
-const VPS_COUNTRY = Config.get('nano.VPS_COUNTRY');
+
 const si = require('systeminformation');
 const NanoCurrency = require('nanocurrency');
 const osu = require('node-os-utils')
 const qrcode = require('yaqrcode');
-
-const axios = require('axios').create({
-	baseURL: RPC_URL
-});
+const axios = require('axios').create({ baseURL: RPC_URL });
 
 const COINGECKO_API = "https://api.coingecko.com/api/v3/coins/nano?localization=false&tickers=false&market_data=true&community_data=false&developer_data=false&sparkline=false";
+
+const RPC_URL = Config.get('nano.RPC_URL');
+const VPS_COUNTRY = Config.get('nano.VPS_COUNTRY');
+
+const ALLOW_PUBLIC_RPC_ACCESS = Config.get('nano.ALLOW_PUBLIC_RPC_ACCESS');
+const PUBLIC_RPC_URL = Config.get('nano.PUBLIC_RPC_URL');
+const API_ALLOWED_COMMANDS = Config.get('nano.API_ALLOWED_COMMANDS');
 
 class MainController {
 	async getNanoPrice(){
@@ -59,10 +62,6 @@ class MainController {
 		const total_memory = mem_info.totalMemMb.toLocaleString();
 
 		const NANO_USD_PRICE = await this.getNanoPrice();
-
-		const ALLOW_PUBLIC_RPC_ACCESS = Config.get('nano.ALLOW_PUBLIC_RPC_ACCESS');
-		const PUBLIC_RPC_URL = Config.get('nano.PUBLIC_RPC_URL');
-		const API_ALLOWED_COMMANDS = Config.get('nano.API_ALLOWED_COMMANDS');
 
 		const data = {
 			account_address: account_address,

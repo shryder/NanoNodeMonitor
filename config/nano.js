@@ -9,6 +9,6 @@ module.exports = {
 	VPS_COUNTRY: Env.get('VPS_COUNTRY'),
 
 	ALLOW_PUBLIC_RPC_ACCESS: Env.get('ALLOW_PUBLIC_RPC_ACCESS', false),
-	PUBLIC_RPC_URL: Env.get('PUBLIC_RPC_URL', "")
+	PUBLIC_RPC_URL: Env.get('PUBLIC_RPC_URL', ""),
 	API_ALLOWED_COMMANDS: Env.get('API_ALLOWED_COMMANDS', "")
 }
