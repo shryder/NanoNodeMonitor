@@ -6,12 +6,16 @@
 				<div class="card">
 					<div class="card-content">
 						<span class="card-title">
-							Account
+							Account - Donations are welcome!
 						</span>
 						<a href="https://nanolooker.com/account/{{ account_address }}">{{ account_address }}</a>
-						<a href='nano:{{ account_address }}' style='position: absolute;right: 5px;top: 5px;'>
-							<img src="{{ qrcode }}" style='width:100px;'>
-						</a>
+						<a href="#" class="copy-to-clipboard tooltipped" data-tooltip="Click to copy" data-content="{{ account_address }}"><i class="material-icons" style='font-size: 20px;vertical-align: sub;'>filter_none</i></a>
+
+						<div class="qr-code">
+							<a href='nano:{{ account_address }}'>
+								<img src="{{ qrcode }}" style='width:100px;'>
+							</a>
+						</div>
 					</div>
 				</div>
 			</div>

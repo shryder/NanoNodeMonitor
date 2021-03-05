@@ -112,6 +112,7 @@ class MainController {
 			let data = await this.getNodeInfo();
 			return view.render('index', data);
 		} catch(e) {
+			console.error(e);
 			return "Something wrong happened, this NANO node might be down right now."
 		}
 	}
