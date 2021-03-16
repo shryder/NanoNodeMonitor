@@ -26,7 +26,7 @@
 					<div class="card">
 						<div class="card-content">
 							<span class="card-title">
-								Public API
+								Public RPC API
 							</span>
 							<div>
 								Currently this API is free for unlimited use, accepts both GET and POST requests
@@ -34,12 +34,18 @@
 							<blockquote>
 								{{ public_rpc.url }}
 							</blockquote>
+							@if(public_websockets.enabled)
+								<blockquote>
+									{{ public_websockets.url }}
+								</blockquote>
+							@endif
 							<div>
 								List of allowed commands:
 							</div>
 							<blockquote>
 								{{ public_rpc.allowed_commands }}
 							</blockquote>
+							<hr>
 						</div>
 					</div>
 				</div>

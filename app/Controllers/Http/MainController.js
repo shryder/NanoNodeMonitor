@@ -16,6 +16,9 @@ const ALLOW_PUBLIC_RPC_ACCESS = Config.get('nano.ALLOW_PUBLIC_RPC_ACCESS');
 const PUBLIC_RPC_URL = Config.get('nano.PUBLIC_RPC_URL');
 const API_ALLOWED_COMMANDS = Config.get('nano.API_ALLOWED_COMMANDS');
 
+const ALLOW_PUBLIC_WS_ACCESS = Config.get('nano.ALLOW_PUBLIC_WS_ACCESS');
+const PUBLIC_WS_URL = Config.get('nano.PUBLIC_WS_URL');
+
 const axios = require('axios').create({ baseURL: RPC_URL });
 
 class MainController {
@@ -70,6 +73,10 @@ class MainController {
 				enabled: ALLOW_PUBLIC_RPC_ACCESS,
 				url: PUBLIC_RPC_URL,
 				allowed_commands: API_ALLOWED_COMMANDS
+			},
+			public_websockets: {
+				enabled: ALLOW_PUBLIC_WS_ACCESS,
+				url: PUBLIC_WS_URL
 			},
 			node: {
 				version: node_info.node_vendor,
