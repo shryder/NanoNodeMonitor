@@ -53,6 +53,10 @@ class MainController {
 			weight: "true",
 			pending: "true"
 		});
+		
+		const frontier_count = await this.sendRPC({
+			action: "frontier_count"
+		});
 
 		const uptime = await this.sendRPC({
 			action: "uptime"
@@ -88,7 +92,7 @@ class MainController {
 				current_block: this.prettifyNumber(block_count_info.count),
 				cemented_block: this.prettifyNumber(block_count_info.cemented),
 				unchecked_blocks: this.prettifyNumber(block_count_info.unchecked),
-				account_count: this.prettifyNumber(telemetry.account_count)
+				account_count: this.prettifyNumber(frontier_count.count)
 			},
 			account: {
 				balance: this.convertFromRaw(account_info.balance) + " NANO",
