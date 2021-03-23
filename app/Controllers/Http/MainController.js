@@ -21,7 +21,7 @@ const ALLOW_PUBLIC_WS_ACCESS = Config.get('nano.ALLOW_PUBLIC_WS_ACCESS');
 const PUBLIC_WS_URL = Config.get('nano.PUBLIC_WS_URL');
 
 const ALLOW_EXPLORER = Config.get('nano.ALLOW_EXPLORER');
-const axios = require('axios').create({ baseURL: RPC_URL });
+const axios = require('axios');
 
 class MainController {
 	async getNanoPrice(){
