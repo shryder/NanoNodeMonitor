@@ -35,11 +35,7 @@ class NodeRPC {
 	}
 
 	async get(data) {
-		let response = await this.axios.post('/', data, {
-			headers: {
-				Authorization: 'Basic ' + Buffer.from('shryder:Ue@F#11mMiAsLPF2k67').toString('base64')
-			}
-		});
+		let response = await this.axios.post('/', data);
 
 		return response.data;
 	}
