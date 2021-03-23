@@ -31,7 +31,7 @@ class MainController {
 	}
 
 	convertFromRaw(raw) {
-		return parseInt(NanoCurrency.convert(raw, { from: "raw", to: "NANO" })).toLocaleString(0);
+		return parseFloat(NanoCurrency.convert(raw, { from: "raw", to: "NANO" })).toFixed(2);
 	}
 
 	prettifyNumber(number) {
@@ -50,7 +50,7 @@ class MainController {
 			weight: "true",
 			pending: "true"
 		});
-		
+
 		const frontier_count = await NodeRPC.get({
 			action: "frontier_count"
 		});
