@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
 	M.Dropdown.init(document.querySelectorAll('.dropdown-trigger'), {});
 	M.Tooltip.init(document.querySelectorAll('.tooltipped'), {});
-
+	
 	$(".copy-to-clipboard").click(function(){
 		let content = $(this).data('content');
 
@@ -13,5 +13,13 @@ document.addEventListener('DOMContentLoaded', function() {
 		element.select();
 		document.execCommand("copy");
 		document.body.removeChild(element);
-	})
+	});
+
+	$("[data-timestamp]").each(function(i, el){
+		let date = moment.unix($(el).data('timestamp'));
+
+		$(el).attr('data-tooltip', date.toString());
+		$(el).text(date.fromNow());
+	});
+
 });

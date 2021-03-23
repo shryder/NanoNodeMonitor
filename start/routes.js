@@ -17,3 +17,8 @@
 const Route = use('Route')
 
 Route.get('/', 'MainController.index');
+
+Route.post('/search', 'ExplorerController.search');
+
+Route.get('/accounts/:account', 'ExplorerController.getAccount').as('account');
+Route.get('/blocks/:block', 'ExplorerController.getBlock').as('block');

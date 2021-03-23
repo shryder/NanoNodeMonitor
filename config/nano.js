@@ -14,4 +14,6 @@ module.exports = {
 
 	ALLOW_PUBLIC_WS_ACCESS: Env.get('ALLOW_PUBLIC_WS_ACCESS', false),
 	PUBLIC_WS_URL: Env.get('PUBLIC_WS_URL', ''),
+
+	ALLOW_EXPLORER: Env.get('ALLOW_EXPLORER', false)
 }

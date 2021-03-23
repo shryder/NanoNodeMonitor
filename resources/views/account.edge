@@ -1,0 +1,73 @@
+@layout('layout')
+
+@section('content')
+<div class='row'>
+	<div class="col s12">
+		<div class="card">
+			<div class="card-content">
+				<span class="card-title">{{ history.account }}</span>
+				<div>
+					Represented by: {{ account_info.representative }}
+				</div>
+				<div>
+					Balance: {{ fromRaw(account_info.balance) }}
+				</div>
+				<div>
+					Blocks: {{ account_info.block_count }}
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class='row'>
+	<div class="col s12">
+		<div class="card">
+			<div class="card-content">
+				<span class="card-title">Transaction History</span>
+				<table>
+					<thead>
+						<tr>
+							<th>Date</th>
+							<th>Type</th>
+							<th>Account</th>
+							<th>Amount</th>
+							<th>Hash</th>
+						</tr>
+					</thead>
+					<tbody>
+						@each(transaction in history.history)
+							<tr>
+								<td data-position="top" class="tooltipped" data-tooltip="" data-timestamp="{{ transaction.local_timestamp }}">
+									{{ transaction.local_timestamp }}
+								</td>
+								<td>
+									{{ transaction.subtype }}
+								</td>
+								@if(transaction.subtype == "send" || transaction.subtype == "receive")
+									<td>
+										<a href="/accounts/{{ transaction.account }}">{{ transaction.account }}</a>
+									</td>
+								@else
+									<td>
+										<a href="/accounts/{{ transaction.representative }}">{{ transaction.representative }}</a>
+									</td>
+								@endif
+								<td>
+									{{ fromRaw(transaction.amount) }}
+								</td>
+								<td>
+									<a href="/blocks/{{ transaction.hash }}">
+										{{ transaction.hash.substr(0, 4) }}...{{ transaction.hash.substr(60, 4) }}
+									</a>
+								</td>
+							</tr>
+						@endeach
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+
+@endsection

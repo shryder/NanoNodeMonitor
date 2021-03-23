@@ -20,6 +20,20 @@
 				</div>
 			</div>
 		</div>
+		@if(allow_explorer)
+			<div class='row'>
+				<div class="col s12">
+					<div class="card">
+						<div class="card-content">
+							<form action="/search" method="POST">
+								{{ csrfField() }}
+								<input name="query" pattern="((xrb|nano)_[a-z0-9]{60}|[A-Z0-9]{64})" placeholder="Search for an address or block" type="text" class="validate">
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		@endif
 		@if(public_rpc.enabled)
 			<div class='row'>
 				<div class="col s12">

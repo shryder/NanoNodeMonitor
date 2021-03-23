@@ -1,5 +1,6 @@
 'use strict'
 
+
 /*
 |--------------------------------------------------------------------------
 | Providers
@@ -10,13 +11,16 @@
 | provider here.
 |
 */
+const path = require('path');
+
 const providers = [
-  '@adonisjs/framework/providers/AppProvider',
-  '@adonisjs/framework/providers/ViewProvider',
-  '@adonisjs/bodyparser/providers/BodyParserProvider',
-  '@adonisjs/cors/providers/CorsProvider',
-  '@adonisjs/shield/providers/ShieldProvider',
-  '@adonisjs/session/providers/SessionProvider',
+	'@adonisjs/framework/providers/AppProvider',
+	'@adonisjs/framework/providers/ViewProvider',
+	'@adonisjs/bodyparser/providers/BodyParserProvider',
+	'@adonisjs/cors/providers/CorsProvider',
+	'@adonisjs/shield/providers/ShieldProvider',
+	'@adonisjs/session/providers/SessionProvider',
+	path.join(__dirname, '..', 'providers', 'RpcProvider')
 ]
 
 /*
@@ -29,7 +33,7 @@ const providers = [
 |
 */
 const aceProviders = [
-  '@adonisjs/lucid/providers/MigrationsProvider'
+	'@adonisjs/lucid/providers/MigrationsProvider'
 ]
 
 /*

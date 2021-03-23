@@ -1,6 +1,7 @@
 'use strict'
 
 const Config = use('Config');
+const NodeRPC = use('NodeRPC');
 
 const si = require('systeminformation');
 const NanoCurrency = require('nanocurrency');
@@ -19,6 +20,7 @@ const API_ALLOWED_COMMANDS = Config.get('nano.API_ALLOWED_COMMANDS');
 const ALLOW_PUBLIC_WS_ACCESS = Config.get('nano.ALLOW_PUBLIC_WS_ACCESS');
 const PUBLIC_WS_URL = Config.get('nano.PUBLIC_WS_URL');
 
+const ALLOW_EXPLORER = Config.get('nano.ALLOW_EXPLORER');
 const axios = require('axios').create({ baseURL: RPC_URL });
 
 class MainController {
@@ -26,11 +28,6 @@ class MainController {
 		let response = await axios.get(COINGECKO_API);
 
 		return response.data.market_data.current_price.usd;
-	}
-
-	async sendRPC(data) {
-		let response = await axios.post('/', data);
-		return response.data;
 	}
 
 	convertFromRaw(raw) {
@@ -43,10 +40,10 @@ class MainController {
 
 	async getNodeInfo(){
 		const account_address = Config.get('nano.account_address');
-		const telemetry = await this.sendRPC({ action: "telemetry" });
-		const block_count_info = await this.sendRPC({ action: "block_count" });
-		const node_info = await this.sendRPC({ action: "version" });
-		const account_info = await this.sendRPC({
+		const telemetry = await NodeRPC.get({ action: "telemetry" });
+		const block_count_info = await NodeRPC.get({ action: "block_count" });
+		const node_info = await NodeRPC.get({ action: "version" });
+		const account_info = await NodeRPC.get({
 			action: "account_info",
 			account: account_address,
 			representative: "true",
@@ -54,11 +51,11 @@ class MainController {
 			pending: "true"
 		});
 		
-		const frontier_count = await this.sendRPC({
+		const frontier_count = await NodeRPC.get({
 			action: "frontier_count"
 		});
 
-		const uptime = await this.sendRPC({
+		const uptime = await NodeRPC.get({
 			action: "uptime"
 		});
 
@@ -72,6 +69,7 @@ class MainController {
 		const NANO_USD_PRICE = await this.getNanoPrice();
 
 		const data = {
+			allow_explorer: ALLOW_EXPLORER,
 			account_address: account_address,
 			public_rpc: {
 				enabled: ALLOW_PUBLIC_RPC_ACCESS,

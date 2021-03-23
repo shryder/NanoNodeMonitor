@@ -9,13 +9,15 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
 	{{ style('main') }}
+	@section('style')
+	@endsection
 
 	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 </head>
 <body>
 	<nav>
 		<div class="nav-wrapper">
-			<a href="#" class="brand-logo">NANO Node Monitor</a>
+			<a href="/" class="brand-logo">NANO Node Monitor</a>
 			<ul id="nav-mobile" class="right hide-on-med-and-down">
 				<li><a href="https://gitlab.com/Shryder/nanonodemonitor">Source Code</a></li>
 			</ul>
@@ -32,7 +34,8 @@
 	<!-- Compiled and minified JavaScript -->
 	<script src="https://code.jquery.com/jquery-3.6.0.slim.min.js" integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI=" crossorigin="anonymous"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+	<script type="text/javascript" src="https://momentjs.com/downloads/moment.min.js"></script>
 
-	<script type="text/javascript" src="main.js"></script>
+	<script type="text/javascript" src="/main.js"></script>
 </body>
 </html>
