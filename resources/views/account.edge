@@ -20,11 +20,57 @@
 	</div>
 </div>
 
+@if(unclaimed_funds.blocks !== '')
+	<div class='row'>
+		<div class="col s12">
+			<div class="card">
+				<div class="card-content">
+					<span class="card-title">Unclaimed Funds</span>
+					<table>
+						<thead>
+							<tr>
+								<th>Sender</th>
+								<th>Amount</th>
+								<th>Hash</th>
+							</tr>
+						</thead>
+						<tbody>
+							@each((transaction, hash) in unclaimed_funds.blocks)
+								<tr>
+									<td>
+										<a href="/accounts/{{ transaction.source }}">{{ transaction.source }}</a>
+									</td>
+									<td>
+										{{ fromRaw(transaction.amount) }}
+									</td>
+									<td>
+										<a href="/blocks/{{ hash }}">
+											{{ hash.substr(0, 4) }}...{{ hash.substr(60, 4) }}
+										</a>
+									</td>
+								</tr>
+							@endeach
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+@endif
 <div class='row'>
 	<div class="col s12">
 		<div class="card">
 			<div class="card-content">
-				<span class="card-title">Transaction History</span>
+				<span class="card-title">
+					Transaction History
+					<div style='float:right;'>
+						@if(show_confirmed_status == 0) 
+							<a href='?page={{ current_page }}&confirmed=1' class="btn tooltipped" data-tooltip='Higher Page Load Time'>Show Confirmation Status</a>
+						@else
+							<a href='?page={{ current_page }}&confirmed=0' class='btn red'>Hide Confirmation Status</a>
+						@endif
+					</div>
+				</span>
 				<table>
 					<thead>
 						<tr>
@@ -32,39 +78,85 @@
 							<th>Type</th>
 							<th>Account</th>
 							<th>Amount</th>
+							@if(show_confirmed_status == 1)
+								<th>Confirmed</th>
+							@endif
 							<th>Hash</th>
 						</tr>
 					</thead>
 					<tbody>
 						@each(transaction in history.history)
-							<tr>
-								<td data-position="top" class="tooltipped" data-tooltip="" data-timestamp="{{ transaction.local_timestamp }}">
-									{{ transaction.local_timestamp }}
-								</td>
-								<td>
-									{{ transaction.subtype }}
-								</td>
-								@if(transaction.subtype == "send" || transaction.subtype == "receive")
+							@if(transaction.type == "state")
+								<tr>
+									<td data-position="top" class="tooltipped" data-tooltip="" data-timestamp="{{ transaction.local_timestamp }}">
+										{{ transaction.local_timestamp }}
+									</td>
+									<td>
+										{{ transaction.subtype }}
+									</td>
+									@if(transaction.subtype == "send" || transaction.subtype == "receive" || transaction.subtype == "epoch")
+										<td>
+											<a href="/accounts/{{ transaction.account }}">{{ transaction.account }}</a>
+										</td>
+									@elseif(transaction.subtype == "change")
+										<td>
+											<a href="/accounts/{{ transaction.representative }}">{{ transaction.representative }}</a>
+										</td>
+									@endif
+									<td>
+										{{ fromRaw(transaction.amount) }}
+									</td>
+									@if(show_confirmed_status == 1)
+										<td>{{ transaction.confirmed }}</td>
+									@endif
+									<td>
+										<a href="/blocks/{{ transaction.hash }}">
+											{{ transaction.hash.substr(0, 4) }}...{{ transaction.hash.substr(60, 4) }}
+										</a>
+									</td>
+								</tr>
+							@elseif(transaction.type == "send")
+								<tr>
+									<td data-position="top" class="tooltipped" data-tooltip="" data-timestamp="{{ transaction.local_timestamp }}">
+										{{ transaction.local_timestamp }}
+									</td>
+									<td>
+										{{ transaction.type }}
+									</td>
 									<td>
 										<a href="/accounts/{{ transaction.account }}">{{ transaction.account }}</a>
 									</td>
-								@else
 									<td>
-										<a href="/accounts/{{ transaction.representative }}">{{ transaction.representative }}</a>
+										{{ fromRaw(transaction.amount) }}
 									</td>
-								@endif
-								<td>
-									{{ fromRaw(transaction.amount) }}
-								</td>
-								<td>
-									<a href="/blocks/{{ transaction.hash }}">
-										{{ transaction.hash.substr(0, 4) }}...{{ transaction.hash.substr(60, 4) }}
-									</a>
-								</td>
-							</tr>
+									@if(show_confirmed_status == 1)
+										<td>{{ transaction.confirmed }}</td>
+									@endif
+									<td>
+										<a href="/blocks/{{ transaction.hash }}">
+											{{ transaction.hash.substr(0, 4) }}...{{ transaction.hash.substr(60, 4) }}
+										</a>
+									</td>
+								</tr>
+							@endif
 						@endeach
 					</tbody>
 				</table>
+				<center>
+					<ul class="pagination">
+						@each(index in pages)
+							@if(current_page == index) 
+								<li class="active"><a href="#!">{{ index }}</a></li>
+							@else
+								<li class="waves-effect"><a href="?page={{ index }}&confirmed={{ show_confirmed_status == 1 ? 1 : 0 }}">{{ index }}</a></li>
+							@endif
+						@endeach
+						@if(total_pages > MAX_VISIBLE_PAGES)
+							...
+							<li class="waves-effect"><a href="?page={{ total_pages }}&confirmed={{ show_confirmed_status == 1 ? 1 : 0 }}">{{ total_pages }}</a></li>
+						@endif
+					</ul>
+				</center>
 			</div>
 		</div>
 	</div>

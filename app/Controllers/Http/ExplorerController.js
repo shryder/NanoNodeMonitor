@@ -4,7 +4,8 @@ const Config = use('Config');
 const ALLOW_EXPLORER = Config.get('nano.ALLOW_EXPLORER');
 const RPC = use('NodeRPC');
 
-const HISTORY_AMOUNT_PER_PAGE = 10;
+const HISTORY_TX_PER_PAGE = 15;
+const MAX_VISIBLE_PAGES = 100;
 
 class ExplorerController {
 	async getAccount({ request, view, params }) {
@@ -12,9 +13,14 @@ class ExplorerController {
 			return "Explorer is not allowed on this node";
 		}
 
-		const page = parseInt(request.input('page', 1));
-		if(isNaN(page)) {
-			return "Invalid page provided";
+		const current_page = parseInt(request.input('page', 1));
+		if(isNaN(current_page)) {
+			return "Invalid 'page' value provided";
+		}
+
+		const show_confirmed_status = parseInt(request.input('confirmed', 0));
+		if(isNaN(show_confirmed_status)) {
+			return "Invalid 'confirmed' value provided";
 		}
 
 		try {
@@ -26,19 +32,44 @@ class ExplorerController {
 				pending: true
 			});
 
+			const unclaimed_funds = await RPC.get({
+				action: "pending",
+				account: params.account,
+				source: "true",
+				count: "50"
+			});
+
 			if("error" in account_info && account_info.error == "Bad account number") {
 				return view.render('message', { message: "Wrong account address provided or account still not open on this node" });
+			}
+
+			const total_pages = Math.round(parseInt(account_info.block_count) / HISTORY_TX_PER_PAGE);
+			let pages = [];
+			if(total_pages > 0) {
+				const visible_pages = total_pages > MAX_VISIBLE_PAGES ? MAX_VISIBLE_PAGES : total_pages;
+				// I cant find how to simply loop n times using edgejs so im doing it here
+				for (let i = 1; i <= visible_pages; i++) {
+					pages.push(i);
+				}
 			}
 
 			const history = await RPC.get({
 				action: "account_history",
 				account: params.account,
-				offset: (page - 1) * HISTORY_AMOUNT_PER_PAGE,
-				count: HISTORY_AMOUNT_PER_PAGE,
+				offset: (current_page - 1) * HISTORY_TX_PER_PAGE,
+				count: HISTORY_TX_PER_PAGE,
 				raw: true
 			});
 
-			return view.render('account', { history, account_info })
+			console.log(history);
+
+			if(show_confirmed_status === 1){
+				for (let i = 0; i < history.history.length; i++) {
+					history.history[i].confirmed = (await RPC.get({ action: "block_info", hash: history.history[i].hash })).confirmed;
+				}
+			}
+
+			return view.render('account', { history, account_info, unclaimed_funds, show_confirmed_status, total_pages, MAX_VISIBLE_PAGES, pages, current_page })
 		} catch(e) {
 			console.error(e);
 			return "Something wrong happened.";
