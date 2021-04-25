@@ -3,6 +3,7 @@
 const Config = use('Config');
 const ALLOW_EXPLORER = Config.get('nano.ALLOW_EXPLORER');
 const RPC = use('NodeRPC');
+const NanoCurrency = require('nanocurrency');
 
 const HISTORY_TX_PER_PAGE = 15;
 const MAX_VISIBLE_PAGES = 100;
@@ -13,6 +14,7 @@ class ExplorerController {
 			return "Explorer is not allowed on this node";
 		}
 
+		const filter_min_amount = request.input('min', '-1');
 		const current_page = parseInt(request.input('page', 1));
 		if(isNaN(current_page)) {
 			return "Invalid 'page' value provided";
@@ -61,7 +63,13 @@ class ExplorerController {
 				raw: true
 			});
 
-			console.log(history);
+			if (filter_min_amount !== "-1") {
+				history.history = history.history.filter((tx) => {
+					if("amount" in tx) {
+						return NanoCurrency.convert(tx.amount, { from: "raw", to: "NANO" }) >= NanoCurrency.convert(filter_min_amount, { from: "raw", to: "NANO" });
+					}
+				});
+			}
 
 			if(show_confirmed_status === 1){
 				for (let i = 0; i < history.history.length; i++) {

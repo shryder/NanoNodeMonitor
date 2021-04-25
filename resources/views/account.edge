@@ -64,6 +64,10 @@
 				<span class="card-title">
 					Transaction History
 					<div style='float:right;'>
+						<a class="btn" href="?page={{ current_page }}&confirmed={{ show_confirmed_status == 0 ? "0" : "1" }}&min=100000000000000000000000000000">
+							Min 0.1 NANO
+						</a>
+
 						@if(show_confirmed_status == 0) 
 							<a href='?page={{ current_page }}&confirmed=1' class="btn tooltipped" data-tooltip='Higher Page Load Time'>Show Confirmation Status</a>
 						@else

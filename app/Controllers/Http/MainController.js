@@ -21,6 +21,8 @@ const ALLOW_PUBLIC_WS_ACCESS = Config.get('nano.ALLOW_PUBLIC_WS_ACCESS');
 const PUBLIC_WS_URL = Config.get('nano.PUBLIC_WS_URL');
 
 const ALLOW_EXPLORER = Config.get('nano.ALLOW_EXPLORER');
+const ACCOUNT_ADDRESS = Config.get('nano.account_address');
+
 const axios = require('axios');
 
 class MainController {
@@ -39,13 +41,12 @@ class MainController {
 	}
 
 	async getNodeInfo(){
-		const account_address = Config.get('nano.account_address');
 		const telemetry = await NodeRPC.get({ action: "telemetry" });
 		const block_count_info = await NodeRPC.get({ action: "block_count" });
 		const node_info = await NodeRPC.get({ action: "version" });
 		const account_info = await NodeRPC.get({
 			action: "account_info",
-			account: account_address,
+			account: ACCOUNT_ADDRESS,
 			representative: "true",
 			weight: "true",
 			pending: "true"
@@ -70,7 +71,7 @@ class MainController {
 
 		const data = {
 			allow_explorer: ALLOW_EXPLORER,
-			account_address: account_address,
+			account_address: ACCOUNT_ADDRESS,
 			public_rpc: {
 				enabled: ALLOW_PUBLIC_RPC_ACCESS,
 				url: PUBLIC_RPC_URL,
@@ -110,7 +111,7 @@ class MainController {
 				cpu: cpu_info.brand,
 				cpu_usage: `${cpu_usage}%`
 			},
-			qrcode: qrcode(`nano:${account_address}`)
+			qrcode: qrcode(`nano:${ACCOUNT_ADDRESS}`)
 		}
 
 		return data;
