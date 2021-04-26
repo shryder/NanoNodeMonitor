@@ -81,6 +81,7 @@
 							<th>Date</th>
 							<th>Type</th>
 							<th>Account</th>
+							<th>Balance</th>
 							<th>Amount</th>
 							@if(show_confirmed_status == 1)
 								<th>Confirmed</th>
@@ -108,6 +109,9 @@
 										</td>
 									@endif
 									<td>
+										{{ fromRaw(transaction.balance) }}
+									</td>
+									<td>
 										{{ fromRaw(transaction.amount) }}
 									</td>
 									@if(show_confirmed_status == 1)
@@ -129,6 +133,9 @@
 									</td>
 									<td>
 										<a href="/accounts/{{ transaction.account }}">{{ transaction.account }}</a>
+									</td>
+									<td>
+										{{ fromRaw(transaction.balance) }}
 									</td>
 									<td>
 										{{ fromRaw(transaction.amount) }}
